@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quizz Ditadura Militar</title>
+  <style>
+    body {
+      text-align: center;
+      background-image: url(jogo-transformed.jpeg);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    
+    h1 {
+      margin-top: 250px;
+      color: #fff;
+    }
+    
+    #game-container {
+      margin: 40px auto;
+      width: 1060px;
+      height: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #start-btn {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 40px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    
+    #question {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    #options {
+      list-style-type: none;
+      font-size: 30px;  
+      margin-bottom: 30px;
+    }
+
+
+    #options li button {
+      font-size: large;
+    }
+    
+    #options li {
+      margin-bottom: 15px;
+    }
+
+    .selected {
+      background-color: #007bff;
+      color: #fff;
+    }
+    
+    #result {
+      font-size: 50px;
+      margin-top: 30px;
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quizz Ditadura Militar</h1>
+  <div id="game-container">
+    <button id="start-btn">Iniciar Jogo</button>
+    <div id="question"></div>
+    <ul id="options"></ul>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Assinale a alternativa que apresenta, respectivamente, o primeiro e último presidente da Ditadura Militar.",
+        options: ["A-) Emílio Garrastazu Médici e Itamar Franco.", "B-) Ernesto Geisel e Emílio Garrastazu Médici.", "C-) Castelo Branco e João Baptista de Oliveira Figueiredo.", "D-) João Baptista de Oliveira Figueiredo e Ernesto Geisel.", "E-) Castelo Branco e Emílio Garrastazu Médici."],
+        answer: 2
+      },
+
+      {
+        question: "O presidente brasileiro destituído com o golpe civil-militar de 1964 foi:",
+        options: ["A-) Jânio Quadros","B-) João Goulart","C-) Getúlio Vargas","D-) Juscelino Kubitschek","E-) Café Filho"],
+        answer: 1
+
+      },
+
+      {
+        question: "O levante militar que aconteceu em Brasília em 1963 e que foi motivado pela insatisfação dos militares com uma decisão do STF ficou conhecido como:",
+        options: ["A-) Revolta dos Sargentos","B-) Manifesto dos Mineiros","C-) Revolta dos Tenentes","D-) Revolta de Jacareacanga","E-) Nenhuma das alternativas acima"],
+        answer: 0
+
+      },
+
+      {
+        question: "O levante militar que resultou no golpe civil-militar de 1964 foi iniciado em qual cidade brasileira:",
+        options: ["A-) Rio de Janeiro","B-) São Paulo","C-) Brasília","D-) Porto Alegre","E-) Juiz de Fora"],
+        answer: 4
+
+      },
+
+      {
+        question: "A campanha popular que exigia o direito da população de votar no presidente do Brasil recebeu o nome de:",
+        options: ["A-) Marcha dos Verde Amarelo","B-) Caras-pintadas","C-) Diretas Já","D-) Jornadas de Maio","E-) Nenhuma das alternativas acima"],
+        answer: 2
+
+      },
+
+      {
+        question: "Qual foi o primeiro presidente brasileiro após o término da Ditadura Militar:",
+        options: ["A-) Tancredo Neves","B-) Fernando Collor","C-) João Figueiredo","D-) José Sarney","E-) Ulisses Guimarães"],
+        answer: 3
+
+      },
+
+      {
+        question: "Os dois partidos que existiram durante boa parte da Ditadura Militar foram:",
+        options: ["A-) UDN e Arena","B-) PSD e PTB","C-) MDB e Arena","D-) PT e PDS","E-) PMDB e PSDB"],
+        answer: 2
+
+      },
+
+      {
+        question: "A Frente Ampla foi um movimento de oposição à ditadura formado por um político conservador que havia apoiado o golpe civil-militar de 1964. Estamos falando de:",
+        options: ["A-) Auro de Moura","B-) Magalhães Pinto","C-) Jânio Quadros","D-) Tancredo Neves","E-) Carlos Lacerda"],
+        answer: 4
+
+      },
+
+      {
+        question: "A reunião que deu origem ao Ato Institucional nº 5, em 1968, recebeu qual nome:",
+        options: ["A-) Mergulho Profundo","B-) Missa Negra","C-) Anos de Chumbo","D-) Hora mais Escura","E-) Nenhuma das alternativas acima"],
+        answer: 1
+
+      },
+
+      {
+        question: "Qual foi o general responsável pela movimentação das tropas estacionadas em Juiz de Fora, Minas Gerais, direcionando-as para o Rio de Janeiro, então capital do país, no contexto do Golpe Militar de 1964?",
+        options: ["A-) General Newton Cruz","B-) General Olympio Mourão Filho","C-) General Arthur Costa e Silva","D-) General Castelo Branco","E-) General Luís Carlos Prestes."],
+        answer: 1
+ 
+      },
+
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const startBtn = document.getElementById("start-btn");
+    const questionContainer = document.getElementById("question");
+    const optionsContainer = document.getElementById("options");
+    const resultContainer = document.getElementById("result");
+
+    function startGame() {
+      startBtn.style.display = "none";
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const question = questions[currentQuestion];
+      questionContainer.textContent = question.question;
+
+      optionsContainer.innerHTML = "";
+      for (let i = 0; i < question.options.length; i++) {
+        const option = document.createElement("li");
+        option.textContent = question.options[i];
+        option.onclick = checkAnswer;
+        optionsContainer.appendChild(option);
+      }
+    }
+
+    function checkAnswer(e) {
+      const selectedOption = e.target;
+      const question = questions[currentQuestion];
+      const answer = question.answer;
+
+      if (selectedOption.textContent === question.options[answer]) {
+        score++;
+      }
+
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      questionContainer.style.display = "none";
+      optionsContainer.style.display = "none";
+      resultContainer.textContent = `Você acertou ${score} de ${questions.length} perguntas.`;
+    }
+
+    startBtn.addEventListener("click", startGame);
+  </script>
+</body>
+</html>
